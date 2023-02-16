@@ -10,7 +10,7 @@ const resolvers = {
                 .select('-__v -password')
                 return userData;
             }
-            throw new AuthenticationError('Not logged in');
+            throw new AuthenticationError('You are currently not logged in');
         }
     },
     
@@ -48,12 +48,17 @@ const resolvers = {
             throw new AuthenticationError('Login to save this book')
         },
 
-        
-
-
-
-
-
-
+        removeBook: async (parent, { bookId }, context) => {
+            if (context.user) {
+                const updatedUser = await User.findOneAndUpdate(
+                    {_id: context.user._id},
+                    { $pull: { savedBooks: { bookId: bookId } } },
+                    { new: true }
+                )
+                return updatedUser;
+            };
+        }
     }
-}
+};
+
+module.exports = resolvers;
