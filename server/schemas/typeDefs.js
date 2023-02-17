@@ -10,6 +10,16 @@ const typeDefs = gql`
         saveBook(book: SavedBookInput): User
         removeBook(bookId: String!): User
     }
+
+    input SavedBookInput {
+        authors: [String]
+        title: String
+        description: String
+        bookId: String
+        image: String
+        link: String
+    }
+
     type User {
         _id: ID
         username: String
